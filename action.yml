@@ -57,6 +57,9 @@ inputs:
   skip_unpack:
     description: Choose to skip unpacking the downloaded artifact(s)
     required: false
+  fail-if-not-found:
+    description: When set to false, the action will not fail if artifact is not found. true by default.
+    required: false
 outputs:
   error_message:
     description: The error message, if an error occurs

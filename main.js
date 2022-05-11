@@ -22,6 +22,7 @@ async function main() {
         let runNumber = core.getInput("run_number")
         let checkArtifacts = core.getInput("check_artifacts")
         let searchArtifacts = core.getInput("search_artifacts")
+        const failIfNotFound = core.getInput("fail-if-not-found") !== 'false'
 
         const client = github.getOctokit(token)
 
@@ -125,8 +126,14 @@ async function main() {
             })
         }
 
-        if (artifacts.length == 0)
-            throw new Error("no artifacts found")
+        if (artifacts.length == 0) {
+            if (failIfNotFound) 
+                throw new Error("no artifacts found")
+            else {
+                core.info("no artifacts found but fail-if-not-found is set")
+                return
+            }
+        }
 
         for (const artifact of artifacts) {
             console.log("==> Artifact:", artifact.id)
